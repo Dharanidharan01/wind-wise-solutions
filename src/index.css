@@ -303,6 +303,59 @@
   }
 }
 
+@keyframes spin-windmill {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wind-flow {
+  0% {
+    transform: translateX(-100%) scaleX(0.5);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateX(0%) scaleX(1);
+  }
+  100% {
+    transform: translateX(100%) scaleX(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-spin-windmill {
+  animation: spin-windmill 8s linear infinite;
+}
+
+.animate-spin-windmill-slow {
+  animation: spin-windmill 12s linear infinite;
+}
+
+.animate-spin-windmill-fast {
+  animation: spin-windmill 5s linear infinite;
+}
+
+.animate-wind-flow {
+  animation: wind-flow 3s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
 /* Stagger animations for children */
 .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
 .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
