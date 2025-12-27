@@ -1,21 +1,21 @@
-import { Award, Clock, Shield } from "lucide-react";
+import { Award, Sparkles, Leaf } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const reasons = [
   {
+    icon: Sparkles,
+    title: "Professional, Reliable, Sustainable",
+    description: "We combine professionalism with reliability to deliver sustainable solutions that stand the test of time.",
+  },
+  {
     icon: Award,
-    title: "Technical Expertise",
-    description: "Our team of 12+ skilled technicians brings years of hands-on experience in wind turbine maintenance and repair.",
+    title: "Engineering Excellence in Every Service",
+    description: "Our team brings deep technical expertise and precision engineering to every project we undertake.",
   },
   {
-    icon: Clock,
-    title: "Quick Response Support",
-    description: "24/7 emergency response team ensuring minimal downtime with rapid on-site assistance across India.",
-  },
-  {
-    icon: Shield,
-    title: "Quality & Reliability",
-    description: "We use only certified quality parts and follow industry-best practices to ensure long-lasting solutions.",
+    icon: Leaf,
+    title: "Trusted by Wind Power Leaders",
+    description: "Leading wind farm owners and renewable energy companies trust us for their critical maintenance needs.",
   },
 ];
 

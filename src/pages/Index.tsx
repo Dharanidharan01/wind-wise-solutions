@@ -4,7 +4,8 @@ import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import HeroSection from "@/components/home/HeroSection";
 import ServicesOverview from "@/components/home/ServicesOverview";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
-import IndustriesSection from "@/components/home/IndustriesSection";
+import BrandsSection from "@/components/home/BrandsSection";
+import KeyPromisesSection from "@/components/home/KeyPromisesSection";
 import CTASection from "@/components/home/CTASection";
 
 const Index = () => {
@@ -15,7 +16,8 @@ const Index = () => {
         <HeroSection />
         <ServicesOverview />
         <WhyChooseUs />
-        <IndustriesSection />
+        <BrandsSection />
+        <KeyPromisesSection />
         <CTASection />
       </main>
       <Footer />

@@ -3,78 +3,108 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Wrench, RefreshCw, Hammer, AlertTriangle, Search, FileCheck, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Settings, Headphones, Search, Wrench, Building, ArrowRight, CheckCircle2 } from "lucide-react";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const services = [
   {
-    icon: Wrench,
-    title: "Wind Turbine Preventive Maintenance",
-    description: "Scheduled maintenance programs designed to prevent equipment failure and extend turbine lifespan.",
-    benefits: [
-      "Regular inspections and diagnostics",
-      "Lubrication and component checks",
+    icon: Settings,
+    title: "Multi Brand Services",
+    description: "Comprehensive spare parts sales and mechanical spares development for all major turbine manufacturers.",
+    features: [
+      "OEM & Non-OEM spare parts supply",
+      "Mechanical spares development",
+      "Custom component manufacturing",
+      "Quality-tested materials",
+    ],
+  },
+  {
+    icon: Headphones,
+    title: "Technical Support",
+    description: "Expert on-site and remote engineering support for troubleshooting and optimization.",
+    features: [
+      "On-site engineering assistance",
+      "Remote troubleshooting support",
       "Performance optimization",
-      "Extended equipment life",
-    ],
-  },
-  {
-    icon: RefreshCw,
-    title: "Corrective Maintenance",
-    description: "Expert repair services to restore turbine performance after issues are identified.",
-    benefits: [
-      "Rapid fault diagnosis",
-      "Component repair & replacement",
-      "System restoration",
-      "Performance verification",
-    ],
-  },
-  {
-    icon: Hammer,
-    title: "Repair & Replacement",
-    description: "Complete repair and parts replacement services using quality OEM and non-OEM components.",
-    benefits: [
-      "Gearbox overhaul",
-      "Blade repair & replacement",
-      "Generator servicing",
-      "Control system upgrades",
-    ],
-  },
-  {
-    icon: AlertTriangle,
-    title: "Emergency Breakdown Support",
-    description: "24/7 rapid response team for critical situations to minimize costly downtime.",
-    benefits: [
-      "Round-the-clock availability",
-      "Pan-India coverage",
-      "Rapid mobilization",
-      "Priority parts supply",
+      "Technical consultancy",
     ],
   },
   {
     icon: Search,
     title: "Inspection & Troubleshooting",
-    description: "Comprehensive inspection services with advanced diagnostics for proactive issue resolution.",
-    benefits: [
-      "Visual & technical inspections",
+    description: "Comprehensive performance analysis and preventive inspection services.",
+    features: [
+      "Performance analysis",
+      "Preventive inspection",
+      "Fault diagnostics",
       "Root cause analysis",
-      "Detailed reporting",
-      "Predictive maintenance insights",
     ],
   },
   {
-    icon: FileCheck,
-    title: "Annual Maintenance Contract (AMC)",
-    description: "Customized annual maintenance packages for hassle-free turbine operations.",
-    benefits: [
-      "Scheduled maintenance visits",
-      "Priority response time",
-      "Comprehensive coverage",
-      "Cost-effective solutions",
+    icon: Wrench,
+    title: "Operation & Service",
+    description: "Complete operational support including on-site repair and emergency breakdown assistance.",
+    features: [
+      "On-site repair services",
+      "Spare replacement & repair",
+      "Emergency breakdown support",
+      "Self hoisting crane operations",
+    ],
+  },
+  {
+    icon: Building,
+    title: "Erection & Derection",
+    description: "Safe and controlled turbine installation and dismantling services.",
+    features: [
+      "Safe turbine erection",
+      "Controlled dismantling",
+      "Equipment handling",
+      "Site preparation",
     ],
   },
 ];
 
+const ServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
+  const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
+  
+  return (
+    <div
+      ref={ref}
+      className={`group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 ${
+        isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={{ transitionDelay: `${index * 100}ms` }}
+    >
+      <div className="p-8">
+        <div className="flex items-start gap-4 mb-6">
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <service.icon className="h-7 w-7 text-primary" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{service.title}</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
+          </div>
+        </div>
+        
+        <div className="border-t border-border pt-6">
+          <h4 className="text-xs font-semibold text-primary uppercase tracking-wider mb-4">Key Features</h4>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {service.features.map((feature, idx) => (
+              <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Services = () => {
+  const { ref: headerRef, isInView: headerInView } = useScrollAnimation();
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -85,7 +115,7 @@ const Services = () => {
             <div className="max-w-3xl mx-auto text-center">
               <span className="text-primary font-medium text-sm uppercase tracking-wider">Our Services</span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Comprehensive Wind Turbine Services
+                Comprehensive Wind Turbine Solutions
               </h1>
               <p className="text-lg text-muted-foreground">
                 From routine maintenance to emergency repairs, we provide end-to-end solutions to keep your wind farm operating at peak efficiency.
@@ -97,37 +127,23 @@ const Services = () => {
         {/* Services List */}
         <section className="py-20 lg:py-28 bg-background">
           <div className="container mx-auto px-4">
-            <div className="space-y-8">
+            <div 
+              ref={headerRef}
+              className={`text-center max-w-3xl mx-auto mb-16 transition-all duration-700 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                What We Offer
+              </h2>
+              <p className="text-muted-foreground">
+                Explore our comprehensive range of wind energy services designed to maximize your turbine performance.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
               {services.map((service, index) => (
-                <div
-                  key={index}
-                  className="bg-card border border-border rounded-xl p-8 lg:p-10 hover:border-primary/30 transition-colors duration-300"
-                >
-                  <div className="grid lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <service.icon className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                          <p className="text-muted-foreground">{service.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">Key Benefits</h4>
-                      <ul className="space-y-2">
-                        {service.benefits.map((benefit, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                            {benefit}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                <ServiceCard key={index} service={service} index={index} />
               ))}
             </div>
           </div>
