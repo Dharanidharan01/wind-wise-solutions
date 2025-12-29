@@ -50,39 +50,41 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
       {/* Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8"
+          >
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+            <div
               onClick={() => setIsModalOpen(false)}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+              className="absolute inset-0 bg-foreground/60 backdrop-blur-md"
             />
 
             {/* Modal Content */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{ 
-                duration: 0.3, 
+                duration: 0.35, 
                 ease: [0.4, 0, 0.2, 1]
               }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[95vw] max-w-2xl max-h-[90vh] overflow-hidden"
+              className="relative w-full max-w-3xl max-h-[85vh] overflow-hidden"
             >
-              <div className="bg-card border border-border rounded-2xl shadow-2xl overflow-hidden">
+              <div className="bg-card border border-border rounded-2xl shadow-2xl overflow-y-auto max-h-[85vh]">
                 {/* Close Button */}
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center hover:bg-background transition-colors duration-200"
+                  className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-background/90 backdrop-blur-sm border border-border flex items-center justify-center hover:bg-background transition-colors duration-200"
                 >
                   <X className="h-5 w-5 text-foreground" />
                 </button>
 
                 {/* Product Image */}
-                <div className="relative h-48 sm:h-64 overflow-hidden">
+                <div className="relative h-56 sm:h-72 md:h-80 overflow-hidden">
                   <img
                     src={product.image}
                     alt={product.title}
@@ -92,17 +94,17 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <div className="p-6 sm:p-8 md:p-10">
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
                       {product.icon}
                     </div>
-                    <h2 className="text-xl sm:text-2xl font-bold">
+                    <h2 className="text-2xl sm:text-3xl font-bold">
                       {product.title}
                     </h2>
                   </div>
 
-                  <p className="text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-muted-foreground leading-relaxed text-base sm:text-lg mb-8">
                     {product.description}
                   </p>
 
@@ -115,7 +117,7 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
                 </div>
               </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
