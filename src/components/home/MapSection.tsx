@@ -3,8 +3,8 @@ import { MapPin } from "lucide-react";
 const MapSection = () => {
   const googleMapsLink = "https://maps.app.goo.gl/sSTNXxZwHVNKWFGD8";
   
-  // Embed URL for the location (Coimbatore area based on the business context)
-  const embedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.2649!2d76.9558!3d11.0168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAxJzAwLjUiTiA3NsKwNTcnMjAuOSJF!5e0!3m2!1sen!2sin!4v1704067200000!5m2!1sen!2sin";
+  // Embed URL for Shri Amogha Energy Care Engineering
+  const embedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.6333747071694!2d77.28018229999999!3d10.6855393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba9cb0004e49221%3A0xa6963b3e81907b81!2sShri%20Amogha%20Energy%20care%20Engineering!5e0!3m2!1sen!2sin!4v1767036238458!5m2!1sen!2sin";
 
   const handleMapClick = () => {
     window.open(googleMapsLink, "_blank", "noopener,noreferrer");
