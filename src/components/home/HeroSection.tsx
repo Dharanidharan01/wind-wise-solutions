@@ -77,8 +77,8 @@ const HeroSection = () => {
       transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px) scale(1.1)`
     }}>
         <img src={heroImage} alt="Wind turbines generating clean renewable energy" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/75 to-background/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/90 to-background/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-background/50" />
       </div>
 
       {/* Animated Wind Particles */}
