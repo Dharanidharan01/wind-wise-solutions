@@ -3,32 +3,32 @@ import { ZoomParallax } from "@/components/ui/zoom-parallax";
 const ZoomParallaxSection = () => {
   const windEnergyImages = [
     {
-      src: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Wind turbine close-up view',
+      src: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Wind turbine close-up view",
     },
     {
-      src: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Large-scale wind farm at sunset',
+      src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Large-scale wind farm at sunset",
     },
     {
-      src: 'https://images.unsplash.com/photo-1548337138-e87d889cc369?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Wind turbines against blue sky',
+      src: "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Wind turbines against blue sky",
     },
     {
-      src: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Renewable energy wind farm landscape',
+      src: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Renewable energy wind farm landscape",
     },
     {
-      src: 'https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Wind turbine maintenance',
+      src: "https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Wind turbine maintenance",
     },
     {
-      src: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Wind energy infrastructure at dawn',
+      src: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Wind energy infrastructure at dawn",
     },
     {
-      src: 'https://images.unsplash.com/photo-1532177411027-5d4a6dbcabb2?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
-      alt: 'Modern wind turbines on green field',
+      src: "https://images.unsplash.com/photo-1615209853186-e4bd66602508?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      alt: "Modern wind turbines on green field",
     },
   ];
 
