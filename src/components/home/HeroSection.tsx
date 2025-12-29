@@ -21,7 +21,17 @@ const WindmillIcon = ({
   speed?: "slow" | "normal" | "fast";
 }) => {
   const animationClass = speed === "slow" ? "animate-spin-windmill-slow" : speed === "fast" ? "animate-spin-windmill-fast" : "animate-spin-windmill";
-  return;
+  return (
+    <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="6" className="fill-accent" />
+      <g className={animationClass} style={{ transformOrigin: '50px 50px' }}>
+        <path d="M50 44V10C50 10 60 25 50 44Z" className="fill-accent/70" />
+        <path d="M56 50H90C90 50 75 60 56 50Z" className="fill-accent/70" />
+        <path d="M50 56V90C50 90 40 75 50 56Z" className="fill-accent/70" />
+        <path d="M44 50H10C10 50 25 40 44 50Z" className="fill-accent/70" />
+      </g>
+    </svg>
+  );
 };
 const WindParticle = ({
   delay,
@@ -31,7 +41,7 @@ const WindParticle = ({
   delay: number;
   duration: number;
   top: string;
-}) => <div className="absolute h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent animate-wind-flow" style={{
+}) => <div className="absolute h-[2px] bg-gradient-to-r from-transparent via-accent/40 to-transparent animate-wind-flow" style={{
   top,
   left: 0,
   right: 0,
@@ -67,8 +77,8 @@ const HeroSection = () => {
       transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px) scale(1.1)`
     }}>
         <img src={heroImage} alt="Wind turbines generating clean renewable energy" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/50 to-background/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/20" />
       </div>
 
       {/* Animated Wind Particles */}
