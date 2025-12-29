@@ -28,7 +28,7 @@ const ZoomParallaxSection = () => {
     },
     {
       src: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
-      alt: "Wind energy infrastructure at dawn",,
+      alt: "Wind energy infrastructure at dawn",
     },
   ];
 
