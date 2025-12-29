@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
@@ -9,10 +11,32 @@ import leadershipDemo from "@/assets/leadership-demo.png";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const Company = () => {
+  const location = useLocation();
   const { ref: aboutRef, isInView: aboutInView } = useScrollAnimation();
   const { ref: leadershipRef, isInView: leadershipInView } = useScrollAnimation();
   const { ref: careerRef, isInView: careerInView } = useScrollAnimation();
   const { ref: safetyRef, isInView: safetyInView } = useScrollAnimation();
+
+  // Handle smooth scroll to section when hash changes
+  useEffect(() => {
+    const hash = location.hash;
+    if (hash) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          const headerOffset = 100; // Account for sticky header
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
 
   return (
     <div className="min-h-screen bg-background">
