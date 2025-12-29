@@ -13,6 +13,16 @@ interface ZoomParallaxProps {
   images: Image[];
 }
 
+const imagePositions = [
+  { top: '0', left: '0', height: '25vh', width: '25vw' }, // Center - main image
+  { top: '-30vh', left: '5vw', height: '30vh', width: '35vw' }, // Top right
+  { top: '-10vh', left: '-25vw', height: '45vh', width: '20vw' }, // Top left
+  { top: '0', left: '27.5vw', height: '25vh', width: '25vw' }, // Right
+  { top: '27.5vh', left: '5vw', height: '25vh', width: '20vw' }, // Bottom right
+  { top: '27.5vh', left: '-22.5vw', height: '25vh', width: '30vw' }, // Bottom left
+  { top: '22.5vh', left: '25vw', height: '15vh', width: '15vw' }, // Far right
+];
+
 export function ZoomParallax({ images }: ZoomParallaxProps) {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -30,17 +40,26 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 
   return (
     <div ref={container} className="relative h-[300vh]">
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden bg-muted/30">
         {images.map(({ src, alt }, index) => {
           const scale = scales[index % scales.length];
+          const position = imagePositions[index % imagePositions.length];
 
           return (
             <motion.div
               key={index}
               style={{ scale }}
-              className={`absolute top-0 flex h-full w-full items-center justify-center ${index === 1 ? '[&>div]:!-top-[30vh] [&>div]:!left-[5vw] [&>div]:!h-[30vh] [&>div]:!w-[35vw]' : ''} ${index === 2 ? '[&>div]:!-top-[10vh] [&>div]:!-left-[25vw] [&>div]:!h-[45vh] [&>div]:!w-[20vw]' : ''} ${index === 3 ? '[&>div]:!left-[27.5vw] [&>div]:!h-[25vh] [&>div]:!w-[25vw]' : ''} ${index === 4 ? '[&>div]:!top-[27.5vh] [&>div]:!left-[5vw] [&>div]:!h-[25vh] [&>div]:!w-[20vw]' : ''} ${index === 5 ? '[&>div]:!top-[27.5vh] [&>div]:!-left-[22.5vw] [&>div]:!h-[25vh] [&>div]:!w-[30vw]' : ''} ${index === 6 ? '[&>div]:!top-[22.5vh] [&>div]:!left-[25vw] [&>div]:!h-[15vh] [&>div]:!w-[15vw]' : ''} `}
+              className="absolute top-0 flex h-full w-full items-center justify-center"
             >
-              <div className="relative h-[25vh] w-[25vw]">
+              <div
+                className="relative overflow-hidden rounded-lg shadow-xl"
+                style={{
+                  height: position.height,
+                  width: position.width,
+                  marginTop: position.top,
+                  marginLeft: position.left,
+                }}
+              >
                 <img
                   src={src}
                   alt={alt || `Parallax image ${index + 1}`}
