@@ -8,6 +8,7 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BrandsSection from "@/components/home/BrandsSection";
 import KeyPromisesSection from "@/components/home/KeyPromisesSection";
 import CTASection from "@/components/home/CTASection";
+import MapSection from "@/components/home/MapSection";
 
 const Index = () => {
   return (
@@ -21,6 +22,7 @@ const Index = () => {
         <BrandsSection />
         <KeyPromisesSection />
         <CTASection />
+        <MapSection />
       </main>
       <Footer />
       <WhatsAppButton />
