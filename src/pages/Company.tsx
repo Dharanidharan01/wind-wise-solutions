@@ -4,6 +4,8 @@ import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Target, Eye, Users, Shield, Award, Heart, Briefcase, GraduationCap } from "lucide-react";
+import leadershipDeepak from "@/assets/leadership-deepak.png";
+import leadershipDemo from "@/assets/leadership-demo.png";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const Company = () => {
@@ -96,6 +98,33 @@ const Company = () => {
                 </p>
               </div>
               
+              {/* Leadership Team Members */}
+              <div className="grid md:grid-cols-2 gap-8 mb-12">
+                <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center group">
+                  <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/20 group-hover:border-primary/50 transition-colors">
+                    <img 
+                      src={leadershipDeepak} 
+                      alt="Deepak" 
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-1">Deepak</h3>
+                  <p className="text-sm text-primary font-medium">Leadership Team</p>
+                </div>
+                <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center group">
+                  <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/50 transition-colors">
+                    <img 
+                      src={leadershipDemo} 
+                      alt="Demo Name" 
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-1">Demo Name</h3>
+                  <p className="text-sm text-accent font-medium">Leadership Team</p>
+                </div>
+              </div>
+
+              {/* Leadership Values */}
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="p-8 rounded-2xl bg-background border border-border hover-lift text-center">
                   <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
