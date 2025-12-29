@@ -27,7 +27,7 @@ const ZoomParallaxSection = () => {
       alt: "Wind energy infrastructure at dawn",
     },
     {
-      src: "https://media.istockphoto.com/id/1927102839/photo/wind-power.jpg?s=2048x2048&w=is&k=20&c=IWu86k8DVZxdQ2nm-ExQlpNID82PaGHm6JCUHOpM1xM=",
+      src: "https://media.istockphoto.com/id/2219251799/photo/solar-photovoltaic-windmill-wind-energy-at-sunset.webp?a=1&b=1&s=612x612&w=0&k=20&c=0127-9KiGZleICt0zc5ONXiH1CqO2ztxfiIF4_3Fh10=",
       alt: "Modern wind turbines on green field",
     },
   ];
