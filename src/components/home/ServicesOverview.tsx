@@ -8,26 +8,41 @@ const services = [
     icon: Wrench,
     title: "Wind Turbine Maintenance",
     description: "Comprehensive preventive and corrective maintenance services to keep your turbines running at peak efficiency.",
+    iconColor: "text-accent",
+    bgColor: "bg-accent/10",
+    hoverBg: "group-hover:bg-accent/20",
   },
   {
     icon: Package,
     title: "Spare Parts Supply",
     description: "OEM and non-OEM quality spare parts including gearboxes, blades, bearings, generators, and control panels.",
+    iconColor: "text-primary",
+    bgColor: "bg-primary/10",
+    hoverBg: "group-hover:bg-primary/20",
   },
   {
     icon: AlertTriangle,
     title: "Breakdown & Emergency Support",
     description: "24/7 rapid response team for emergency breakdown situations to minimize your downtime.",
+    iconColor: "text-orange-500",
+    bgColor: "bg-orange-500/10",
+    hoverBg: "group-hover:bg-orange-500/20",
   },
   {
     icon: Search,
     title: "Inspection & Troubleshooting",
     description: "Thorough inspection services with advanced diagnostics to identify and resolve issues proactively.",
+    iconColor: "text-cyan-500",
+    bgColor: "bg-cyan-500/10",
+    hoverBg: "group-hover:bg-cyan-500/20",
   },
   {
     icon: FileCheck,
     title: "AMC Services",
     description: "Annual Maintenance Contracts tailored to your specific needs for hassle-free operations.",
+    iconColor: "text-emerald-500",
+    bgColor: "bg-emerald-500/10",
+    hoverBg: "group-hover:bg-emerald-500/20",
   },
 ];
 
@@ -42,8 +57,8 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-        <service.icon className="h-7 w-7 text-primary" />
+      <div className={`w-14 h-14 rounded-xl ${service.bgColor} flex items-center justify-center mb-6 ${service.hoverBg} group-hover:scale-110 transition-all duration-300`}>
+        <service.icon className={`h-7 w-7 ${service.iconColor}`} />
       </div>
       <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">{service.title}</h3>
       <p className="text-muted-foreground leading-relaxed">{service.description}</p>
