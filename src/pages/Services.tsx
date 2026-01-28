@@ -3,7 +3,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Headphones, Search, Wrench, Building, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Settings, Headphones, Search, Wrench, Building, ArrowRight, CheckCircle2, Phone } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const services = [
@@ -62,6 +62,17 @@ const services = [
       "Site preparation",
     ],
   },
+  {
+    icon: Phone,
+    title: "Call Basis Service",
+    description: "On-demand service support available whenever you need it, without long-term commitments.",
+    features: [
+      "Flexible service scheduling",
+      "No long-term contracts required",
+      "Pay-per-service model",
+      "Quick response time",
+    ],
+  },
 ];
 
 const ServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
@@ -115,10 +126,10 @@ const Services = () => {
             <div className="max-w-3xl mx-auto text-center">
               <span className="text-primary font-medium text-sm uppercase tracking-wider">Our Services</span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                Comprehensive Wind Turbine Solutions
+                Comprehensive Wind Turbine Service
               </h1>
               <p className="text-lg text-muted-foreground">
-                From routine maintenance to emergency repairs, we provide end-to-end solutions to keep your wind farm operating at peak efficiency.
+                From routine service to emergency repairs, we provide end-to-end solutions to keep your wind farm operating at peak efficiency.
               </p>
             </div>
           </div>
@@ -154,10 +165,10 @@ const Services = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground mb-6">
-                Need Custom Service Solutions?
+                Need Custom Service?
               </h2>
               <p className="text-lg text-accent-foreground/80 mb-8">
-                Contact us to discuss your specific requirements and get a tailored maintenance plan.
+                Contact us to discuss your specific requirements and get a tailored service plan.
               </p>
               <Link to="/contact">
                 <Button variant="secondary" size="xl" className="gap-2">

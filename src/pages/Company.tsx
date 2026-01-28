@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Target, Eye, Users, Shield, Award, Heart, Briefcase, GraduationCap } from "lucide-react";
+import { ArrowRight, Target, Eye, Shield, Award, Heart } from "lucide-react";
 import leadershipDeepak from "@/assets/leadership-deepak.png";
 import leadershipDemo from "@/assets/leadership-demo.png";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -14,25 +13,17 @@ const Company = () => {
   const location = useLocation();
   const { ref: aboutRef, isInView: aboutInView } = useScrollAnimation();
   const { ref: leadershipRef, isInView: leadershipInView } = useScrollAnimation();
-  const { ref: careerRef, isInView: careerInView } = useScrollAnimation();
-  const { ref: safetyRef, isInView: safetyInView } = useScrollAnimation();
 
-  // Handle smooth scroll to section when hash changes
   useEffect(() => {
     const hash = location.hash;
     if (hash) {
-      // Small delay to ensure DOM is ready
       setTimeout(() => {
         const element = document.querySelector(hash);
         if (element) {
-          const headerOffset = 100; // Account for sticky header
+          const headerOffset = 100;
           const elementPosition = element.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-          });
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
         }
       }, 100);
     }
@@ -48,7 +39,7 @@ const Company = () => {
             <div className="max-w-3xl mx-auto text-center">
               <span className="text-primary font-medium text-sm uppercase tracking-wider">Our Company</span>
               <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-6">
-                About Shri Amogha Energy Care
+                About SHRI AMOGHA ENERGY CARE ENGINEERING
               </h1>
               <p className="text-lg text-muted-foreground">
                 Building trust through excellence in wind energy services since 2024.
@@ -75,13 +66,13 @@ const Company = () => {
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    Shri Amogha Energy Care Engineering is a leading provider of comprehensive wind turbine maintenance and spare parts solutions. Founded on March 21, 2024, we have quickly established ourselves as a trusted partner for wind farm owners and renewable energy companies across India.
+                    SHRI AMOGHA ENERGY CARE ENGINEERING is a leading provider of comprehensive wind turbine service and spare parts solutions. Founded on March 21, 2024, we have quickly established ourselves as a trusted partner for wind farm owners and renewable energy companies across India.
                   </p>
                   <p>
                     Our focus on reliability, engineering strength, and customer-centric service has made us the preferred choice for windmill service requirements. We combine technical expertise with rapid response capabilities to ensure maximum uptime for your wind energy assets.
                   </p>
                   <p>
-                    With a team of 12+ skilled professionals, we deliver end-to-end solutions from routine maintenance to emergency repairs, always prioritizing quality and safety.
+                    With a team of 12+ skilled professionals, we deliver end-to-end solutions from routine service to emergency repairs, always prioritizing quality and safety.
                   </p>
                 </div>
               </div>
@@ -127,24 +118,24 @@ const Company = () => {
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center group">
                   <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/20 group-hover:border-primary/50 transition-colors">
                     <img 
-                      src={leadershipDeepak} 
-                      alt="Deepak" 
+                      src={leadershipDemo} 
+                      alt="Pandi P - Managing Director" 
                       className="w-full h-full object-cover object-top"
                     />
                   </div>
-                  <h3 className="text-xl font-semibold mb-1">Deepak</h3>
-                  <p className="text-sm text-primary font-medium">Leadership Team</p>
+                  <h3 className="text-xl font-semibold mb-1">Pandi P</h3>
+                  <p className="text-sm text-primary font-medium">Managing Director</p>
                 </div>
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center group">
                   <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/50 transition-colors">
                     <img 
-                      src={leadershipDemo} 
-                      alt="Demo Name" 
+                      src={leadershipDeepak} 
+                      alt="Deepak - Managing Partner" 
                       className="w-full h-full object-cover object-top"
                     />
                   </div>
-                  <h3 className="text-xl font-semibold mb-1">Demo Name</h3>
-                  <p className="text-sm text-accent font-medium">Leadership Team</p>
+                  <h3 className="text-xl font-semibold mb-1">Deepak</h3>
+                  <p className="text-sm text-accent font-medium">Managing Partner</p>
                 </div>
               </div>
 
@@ -170,96 +161,22 @@ const Company = () => {
           </div>
         </section>
 
-        {/* Career Section */}
-        <section id="career" className="py-20 lg:py-28 bg-background">
+        {/* CTA Section */}
+        <section className="py-20 lg:py-28 gradient-cta">
           <div className="container mx-auto px-4">
-            <div 
-              ref={careerRef}
-              className={`grid lg:grid-cols-2 gap-12 items-center transition-all duration-700 ${
-                careerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-            >
-              <div className="order-2 lg:order-1">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
-                    <Briefcase className="h-8 w-8 text-primary mb-3" />
-                    <h4 className="font-semibold mb-1">Growth</h4>
-                    <p className="text-sm text-muted-foreground">Career advancement opportunities</p>
-                  </div>
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
-                    <GraduationCap className="h-8 w-8 text-accent mb-3" />
-                    <h4 className="font-semibold mb-1">Learning</h4>
-                    <p className="text-sm text-muted-foreground">Continuous skill development</p>
-                  </div>
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
-                    <Users className="h-8 w-8 text-accent mb-3" />
-                    <h4 className="font-semibold mb-1">Team</h4>
-                    <p className="text-sm text-muted-foreground">Collaborative work environment</p>
-                  </div>
-                  <div className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
-                    <Heart className="h-8 w-8 text-primary mb-3" />
-                    <h4 className="font-semibold mb-1">Purpose</h4>
-                    <p className="text-sm text-muted-foreground">Contribute to clean energy</p>
-                  </div>
-                </div>
-              </div>
-              <div className="order-1 lg:order-2">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-sm uppercase tracking-wider mb-4">
-                  Career
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Grow With Renewable Energy Experts
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  Join our team of passionate professionals dedicated to powering India's clean energy future. We offer challenging roles, continuous learning opportunities, and a supportive work environment.
-                </p>
-                <Link to="/contact">
-                  <Button variant="hero" className="gap-2">
-                    Join Our Team
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Safety Section */}
-        <section id="safety" className="py-20 lg:py-28 gradient-cta">
-          <div className="container mx-auto px-4">
-            <div 
-              ref={safetyRef}
-              className={`max-w-4xl mx-auto text-center transition-all duration-700 ${
-                safetyInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-            >
-              <span className="inline-block px-4 py-1.5 rounded-full bg-background/20 text-accent-foreground font-medium text-sm uppercase tracking-wider mb-4">
-                Safety
-              </span>
+            <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground mb-6">
-                Safety-First Culture
+                Ready to Partner With Us?
               </h2>
-              <p className="text-lg text-accent-foreground/80 mb-10 max-w-2xl mx-auto">
-                Safety is not just a priority—it's a core value embedded in everything we do.
+              <p className="text-lg text-accent-foreground/80 mb-8">
+                Experience the excellence that makes SHRI AMOGHA ENERGY CARE ENGINEERING a trusted name in wind energy services.
               </p>
-              
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="p-6 rounded-xl bg-background/10 backdrop-blur-sm border border-background/20">
-                  <Shield className="h-10 w-10 text-accent-foreground mx-auto mb-3" />
-                  <h3 className="font-semibold text-accent-foreground mb-2">Industry Compliance</h3>
-                  <p className="text-sm text-accent-foreground/70">Adhering to all industry safety standards and regulations</p>
-                </div>
-                <div className="p-6 rounded-xl bg-background/10 backdrop-blur-sm border border-background/20">
-                  <GraduationCap className="h-10 w-10 text-accent-foreground mx-auto mb-3" />
-                  <h3 className="font-semibold text-accent-foreground mb-2">Training Programs</h3>
-                  <p className="text-sm text-accent-foreground/70">Regular safety training for all team members</p>
-                </div>
-                <div className="p-6 rounded-xl bg-background/10 backdrop-blur-sm border border-background/20">
-                  <Award className="h-10 w-10 text-accent-foreground mx-auto mb-3" />
-                  <h3 className="font-semibold text-accent-foreground mb-2">Safety Protocols</h3>
-                  <p className="text-sm text-accent-foreground/70">Strict protocols for all field operations</p>
-                </div>
-              </div>
+              <Link to="/contact">
+                <Button variant="secondary" size="xl" className="gap-2">
+                  Get in Touch
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

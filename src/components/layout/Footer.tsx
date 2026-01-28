@@ -9,9 +9,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div className="space-y-4">
-            <img src={logo} alt="Shri Amogha" className="h-12 w-auto brightness-0 invert" />
+            <img src={logo} alt="SHRI AMOGHA ENERGY CARE ENGINEERING" className="h-12 w-auto brightness-0 invert" />
             <p className="text-background/70 text-sm leading-relaxed">
-              Your trusted partner for wind turbine maintenance and spare parts solutions across India.
+              Your trusted partner for wind turbine service and spare parts solutions across India.
             </p>
           </div>
 
@@ -20,9 +20,10 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
             <nav className="flex flex-col gap-2">
               {[
-                { name: "About Us", path: "/about" },
+                { name: "About Us", path: "/company#about" },
                 { name: "Services", path: "/services" },
                 { name: "Products", path: "/products" },
+                { name: "In-House", path: "/in-house" },
                 { name: "Contact", path: "/contact" },
               ].map((link) => (
                 <Link
@@ -41,10 +42,10 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-4">Our Services</h4>
             <nav className="flex flex-col gap-2">
               {[
-                "Preventive Maintenance",
-                "Corrective Maintenance",
+                "Preventive Service",
+                "Corrective Service",
                 "Emergency Breakdown",
-                "AMC Services",
+                "Call Basis Service",
               ].map((service) => (
                 <span key={service} className="text-background/70 text-sm">
                   {service}
@@ -90,7 +91,7 @@ const Footer = () => {
         <div className="border-t border-background/10 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-background/60 text-sm">
-              © {new Date().getFullYear()} Shri Amogha Energy Care Engineering. All rights reserved.
+              © {new Date().getFullYear()} SHRI AMOGHA ENERGY CARE ENGINEERING. All rights reserved.
             </p>
             <div className="flex gap-6">
               <Link to="/privacy" className="text-background/60 hover:text-primary transition-colors duration-200 text-sm">
