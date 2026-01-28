@@ -2,16 +2,13 @@ import useScrollAnimation from "@/hooks/useScrollAnimation";
 import { Wind } from "lucide-react";
 
 const brands = [
-  "Suzlon",
   "Vestas",
+  "Vestas RRB",
+  "Pioneer Wincon",
+  "NEPC",
   "Siemens Gamesa",
-  "GE Wind",
-  "Enercon",
-  "Nordex",
-  "Inox Wind",
-  "ReGen Powertech",
-  "WindWorld",
-  "Leitwind",
+  "NEG Micon",
+  "Leit Wind",
 ];
 
 const BrandsSection = () => {
@@ -43,7 +40,7 @@ const BrandsSection = () => {
             <span className="text-gradient block mt-1">Expertise</span>
           </h2>
           <p className="text-muted-foreground text-lg">
-            We provide maintenance and spare parts support for all major wind turbine manufacturers.
+            We provide service and spare parts support for all major wind turbine manufacturers.
           </p>
         </div>
 
@@ -54,7 +51,7 @@ const BrandsSection = () => {
             brandsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 max-w-4xl mx-auto">
             {brands.map((brand, index) => (
               <div
                 key={index}

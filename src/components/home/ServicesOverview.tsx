@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Wrench, Package, AlertTriangle, Search, FileCheck, ArrowRight } from "lucide-react";
+import { Wrench, Package, AlertTriangle, Search, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
@@ -14,8 +14,8 @@ import amcImg from "@/assets/service-amc.jpg";
 const services = [
   {
     icon: Wrench,
-    title: "Wind Turbine Maintenance",
-    description: "Comprehensive preventive and corrective maintenance services to keep your turbines running at peak efficiency.",
+    title: "Wind Turbine Service",
+    description: "Comprehensive preventive and corrective service to keep your turbines running at peak efficiency.",
     iconColor: "text-accent",
     bgColor: "bg-accent/10",
     hoverBg: "group-hover:bg-accent/20",
@@ -24,7 +24,7 @@ const services = [
   {
     icon: Package,
     title: "Spare Parts Supply",
-    description: "OEM and non-OEM quality spare parts including gearboxes, blades, bearings, generators, and control panels.",
+    description: "OEM and non-OEM quality spare parts including gearboxes, blades, bearings, generators, control panels, etc.",
     iconColor: "text-primary",
     bgColor: "bg-primary/10",
     hoverBg: "group-hover:bg-primary/20",
@@ -49,9 +49,9 @@ const services = [
     image: inspectionImg,
   },
   {
-    icon: FileCheck,
-    title: "AMC Services",
-    description: "Annual Maintenance Contracts tailored to your specific needs for hassle-free operations.",
+    icon: Phone,
+    title: "Call Basis Service",
+    description: "On-demand service support tailored to your specific needs without long-term commitments.",
     iconColor: "text-emerald-500",
     bgColor: "bg-emerald-500/10",
     hoverBg: "group-hover:bg-emerald-500/20",
@@ -67,7 +67,6 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
   
   const handleMouseEnter = () => {
     setIsHovered(true);
-    // 0.5s delay before showing image
     hoverTimeoutRef.current = setTimeout(() => {
       setShowImage(true);
     }, 500);
@@ -108,30 +107,21 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
         <p className="text-muted-foreground leading-relaxed">{service.description}</p>
       </div>
       
-      {/* Hover Image Reveal - Floating Panel Style */}
+      {/* Hover Image Reveal */}
       <div 
         className={`absolute inset-0 z-20 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-          showImage 
-            ? 'opacity-100' 
-            : 'opacity-0'
+          showImage ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {/* Glassmorphism Backdrop */}
         <div className={`absolute inset-0 bg-gradient-to-t from-background/95 via-background/80 to-background/60 backdrop-blur-[2px] transition-all duration-500 ${
           showImage ? 'opacity-100' : 'opacity-0'
         }`} />
         
-        {/* Image Container */}
         <div className={`absolute inset-4 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-          showImage 
-            ? 'opacity-100 translate-y-0 scale-100' 
-            : 'opacity-0 translate-y-4 scale-95'
+          showImage ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
         }`}>
           <div className="relative w-full h-full rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/20">
-            {/* Soft glow effect behind image */}
             <div className={`absolute -inset-4 bg-gradient-to-br ${service.bgColor} blur-2xl opacity-50`} />
-            
-            {/* Image */}
             <img 
               src={service.image} 
               alt={service.title}
@@ -139,11 +129,7 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
                 showImage ? 'scale-105' : 'scale-100'
               }`}
             />
-            
-            {/* Image overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
-            
-            {/* Title on image */}
             <div className={`absolute bottom-4 left-4 right-4 transition-all duration-500 delay-100 ${
               showImage ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
@@ -188,11 +174,11 @@ const ServicesOverview = () => {
             Our Services
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 mb-6">
-            Comprehensive Wind Energy
-            <span className="text-gradient block mt-1">Solutions</span>
+            Excellence in Wind, Reliability in
+            <span className="text-gradient block mt-1">Service</span>
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            From routine maintenance to emergency repairs, we provide end-to-end services to maximize your wind farm's performance.
+            From routine service to emergency repairs, we provide end-to-end solutions to maximize your wind farm's performance.
           </p>
         </div>
 
@@ -210,11 +196,10 @@ const ServicesOverview = () => {
             }`}
             style={{ transitionDelay: '500ms' }}
           >
-            {/* Decorative elements */}
             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
             
             <h3 className="text-xl font-semibold text-accent-foreground mb-3 relative z-10">
-              Need Custom Solutions?
+              Need Custom Service?
             </h3>
             <p className="text-accent-foreground/80 mb-6 relative z-10">
               Contact us for tailored services that meet your specific requirements.
