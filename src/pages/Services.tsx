@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
@@ -5,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Settings, Headphones, Search, Wrench, Building, ArrowRight, CheckCircle2, Phone } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import ServiceModal from "@/components/services/ServiceModal";
 
 const services = [
   {
@@ -75,13 +77,20 @@ const services = [
   },
 ];
 
-const ServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
+interface ServiceCardProps {
+  service: typeof services[0];
+  index: number;
+  onClick: () => void;
+}
+
+const ServiceCard = ({ service, index, onClick }: ServiceCardProps) => {
   const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
   
   return (
     <div
       ref={ref}
-      className={`group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 ${
+      onClick={onClick}
+      className={`group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 cursor-pointer hover:shadow-lg hover:shadow-primary/5 ${
         isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
@@ -108,6 +117,12 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
             ))}
           </ul>
         </div>
+
+        {/* Click indicator */}
+        <div className="mt-6 flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+          <span>View Details</span>
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+        </div>
       </div>
     </div>
   );
@@ -115,6 +130,18 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
 
 const Services = () => {
   const { ref: headerRef, isInView: headerInView } = useScrollAnimation();
+  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleServiceClick = (service: typeof services[0]) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedService(null), 300);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -154,7 +181,12 @@ const Services = () => {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
               {services.map((service, index) => (
-                <ServiceCard key={index} service={service} index={index} />
+                <ServiceCard 
+                  key={index} 
+                  service={service} 
+                  index={index} 
+                  onClick={() => handleServiceClick(service)}
+                />
               ))}
             </div>
           </div>
@@ -182,6 +214,13 @@ const Services = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+
+      {/* Service Detail Modal */}
+      <ServiceModal 
+        service={selectedService}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
