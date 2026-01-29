@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div className="space-y-4">
-            <img src={logo} alt="SHRI AMOGHA ENERGY CARE ENGINEERING" className="h-12 w-auto" style={{ filter: 'brightness(0) invert(1)' }} />
+            <img src={logo} alt="SHRI AMOGHA ENERGY CARE ENGINEERING" className="h-12 w-auto" />
             <p className="text-background/70 text-sm leading-relaxed">
               Your trusted partner for wind turbine service and spare parts solutions across India.
             </p>
