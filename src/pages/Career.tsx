@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/chat/ChatBot";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Briefcase, GraduationCap, Clock, Users, Heart, Shield, TrendingUp, Send } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -258,6 +259,7 @@ const Career = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <ChatBot />
     </div>
   );
 };

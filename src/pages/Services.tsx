@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/chat/ChatBot";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Settings, Headphones, Search, Wrench, Building, ArrowRight, CheckCircle2, Phone } from "lucide-react";
@@ -214,6 +215,7 @@ const Services = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <ChatBot />
 
       {/* Service Detail Modal */}
       <ServiceModal 
