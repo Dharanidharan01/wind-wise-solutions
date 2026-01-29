@@ -14,6 +14,68 @@ interface ContactFormData {
   message: string;
 }
 
+// Create JWT for Google Service Account
+async function createGoogleJWT(serviceAccountKey: any): Promise<string> {
+  const header = { alg: "RS256", typ: "JWT" };
+  const now = Math.floor(Date.now() / 1000);
+  const payload = {
+    iss: serviceAccountKey.client_email,
+    sub: serviceAccountKey.client_email,
+    aud: "https://sheets.googleapis.com/",
+    iat: now,
+    exp: now + 3600,
+    scope: "https://www.googleapis.com/auth/spreadsheets",
+  };
+
+  const encoder = new TextEncoder();
+  const headerB64 = btoa(JSON.stringify(header)).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+  const payloadB64 = btoa(JSON.stringify(payload)).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+
+  // Convert PEM to binary
+  const pemHeader = "-----BEGIN PRIVATE KEY-----";
+  const pemFooter = "-----END PRIVATE KEY-----";
+  let pemContents = serviceAccountKey.private_key.replace(pemHeader, "").replace(pemFooter, "");
+  pemContents = pemContents.replace(/\s/g, "");
+  const binaryDer = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0));
+
+  const key = await crypto.subtle.importKey(
+    "pkcs8",
+    binaryDer,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const signatureInput = encoder.encode(`${headerB64}.${payloadB64}`);
+  const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, signatureInput);
+  const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+
+  return `${headerB64}.${payloadB64}.${signatureB64}`;
+}
+
+// Exchange JWT for access token
+async function getAccessToken(serviceAccountKey: any): Promise<string> {
+  const jwt = await createGoogleJWT(serviceAccountKey);
+  
+  const response = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: jwt,
+    }),
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(`Token error: ${JSON.stringify(data)}`);
+  }
+  return data.access_token;
+}
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -28,43 +90,54 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Missing required fields");
     }
 
-    const GOOGLE_SHEETS_API_KEY = Deno.env.get("GOOGLE_SHEETS_API_KEY");
     const SPREADSHEET_ID = "1cIFzeqMSAxytLidgjpQY3TEUxLClbYZaiGBoDfNRr74";
     
     // Format timestamp
     const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
-    // Append data to Google Sheet using Sheets API
-    const sheetsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!A:F:append?valueInputOption=USER_ENTERED&key=${GOOGLE_SHEETS_API_KEY}`;
+    // Get service account key from environment
+    const serviceAccountKeyStr = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_KEY");
     
-    const sheetsResponse = await fetch(sheetsUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        values: [[
-          timestamp,
-          formData.name,
-          formData.company || "N/A",
-          formData.phone,
-          formData.email,
-          formData.message,
-        ]],
-      }),
-    });
+    if (serviceAccountKeyStr) {
+      try {
+        const serviceAccountKey = JSON.parse(serviceAccountKeyStr);
+        const accessToken = await getAccessToken(serviceAccountKey);
 
-    if (!sheetsResponse.ok) {
-      const errorText = await sheetsResponse.text();
-      console.error("Google Sheets API error:", errorText);
-      // Continue execution even if sheets fails - we still want to send email notification
+        // Append data to Google Sheet
+        const sheetsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!A:F:append?valueInputOption=USER_ENTERED`;
+        
+        const sheetsResponse = await fetch(sheetsUrl, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            values: [[
+              timestamp,
+              formData.name,
+              formData.company || "N/A",
+              formData.phone,
+              formData.email,
+              formData.message,
+            ]],
+          }),
+        });
+
+        if (!sheetsResponse.ok) {
+          const errorText = await sheetsResponse.text();
+          console.error("Google Sheets API error:", errorText);
+        } else {
+          console.log("Data appended to Google Sheet successfully");
+        }
+      } catch (sheetError) {
+        console.error("Google Sheets error:", sheetError);
+      }
     } else {
-      console.log("Data appended to Google Sheet successfully");
+      console.log("Google Service Account not configured - skipping sheet update");
     }
 
-    // Send email notification using mailto-style notification
-    // In production, you'd integrate with a service like Resend, SendGrid, etc.
-    // For now, we'll log the contact for the business to follow up
+    // Log the contact for business follow-up
     console.log("New contact form submission:", {
       timestamp,
       name: formData.name,
