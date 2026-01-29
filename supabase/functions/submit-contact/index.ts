@@ -1,10 +1,24 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+// Allowed origins for CORS - restrict to known domains
+const allowedOrigins = [
+  "https://wind-wise-solutions.lovable.app",
+  "https://id-preview--a8b99eee-12a0-4a28-95f8-ed59a4f6ca41.lovable.app",
+  "http://localhost:5173",
+  "http://localhost:8080",
+];
+
+function getCorsHeaders(origin: string | null): Record<string, string> {
+  const allowedOrigin = origin && allowedOrigins.some(allowed => 
+    origin === allowed || origin.endsWith('.lovable.app')
+  ) ? origin : allowedOrigins[0];
+  
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  };
+}
 
 interface ContactFormData {
   name: string;
@@ -77,6 +91,9 @@ async function getAccessToken(serviceAccountKey: any): Promise<string> {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  const origin = req.headers.get("origin");
+  const corsHeaders = getCorsHeaders(origin);
+
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -161,11 +178,26 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   } catch (error: any) {
-    console.error("Error in submit-contact function:", error);
+    // Log full error details server-side for debugging
+    console.error("Contact form error:", {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Return sanitized error message to client - never expose internal details
+    const isValidationError = error.message === "Missing required fields";
+    const userMessage = isValidationError
+      ? "Please fill in all required fields and try again."
+      : "Unable to submit your message. Please try again later or contact us directly.";
+
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({
+        error: userMessage,
+        contact: "shriamoghaenergycare@gmail.com",
+      }),
       {
-        status: 500,
+        status: isValidationError ? 400 : 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
