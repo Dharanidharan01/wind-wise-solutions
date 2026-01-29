@@ -1,14 +1,20 @@
 import useScrollAnimation from "@/hooks/useScrollAnimation";
-import { Wind } from "lucide-react";
+import { Wind, Zap, Settings, Cog, RotateCw, Circle, Factory } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
-const brands = [
-  "Vestas",
-  "Vestas RRB",
-  "Pioneer Wincon",
-  "NEPC",
-  "Siemens Gamesa",
-  "NEG Micon",
-  "Leit Wind",
+interface Brand {
+  name: string;
+  icon: LucideIcon;
+}
+
+const brands: Brand[] = [
+  { name: "Vestas", icon: Wind },
+  { name: "Vestas RRB", icon: RotateCw },
+  { name: "Pioneer Wincon", icon: Cog },
+  { name: "NEPC", icon: Zap },
+  { name: "Siemens Gamesa", icon: Settings },
+  { name: "NEG Micon", icon: Circle },
+  { name: "Leit Wind", icon: Factory },
 ];
 
 const BrandsSection = () => {
@@ -52,18 +58,21 @@ const BrandsSection = () => {
           }`}
         >
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 max-w-4xl mx-auto">
-            {brands.map((brand, index) => (
-              <div
-                key={index}
-                className="group relative p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover-lift transition-all duration-300 text-center"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                  <Wind className="h-6 w-6 text-primary" />
+            {brands.map((brand, index) => {
+              const IconComponent = brand.icon;
+              return (
+                <div
+                  key={index}
+                  className="group relative p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover-lift transition-all duration-300 text-center"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                    <IconComponent className="h-6 w-6 text-primary" />
+                  </div>
+                  <span className="font-semibold text-sm group-hover:text-primary transition-colors">{brand.name}</span>
                 </div>
-                <span className="font-semibold text-sm group-hover:text-primary transition-colors">{brand}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

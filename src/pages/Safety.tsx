@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, GraduationCap, Award, HardHat, AlertTriangle, CheckCircle2, HeartPulse, Eye, FileCheck } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import safetyPPE from "@/assets/safety-ppe.jpg";
+import safetyHeightWork from "@/assets/safety-height-work.jpg";
 
 const safetyPillars = [
   {
@@ -56,6 +58,7 @@ const Safety = () => {
   const { ref: headerRef, isInView: headerInView } = useScrollAnimation();
   const { ref: pillarsRef, isInView: pillarsInView } = useScrollAnimation();
   const { ref: practicesRef, isInView: practicesInView } = useScrollAnimation();
+  const { ref: imagesRef, isInView: imagesInView } = useScrollAnimation();
 
   return (
     <div className="min-h-screen bg-background">
@@ -76,6 +79,45 @@ const Safety = () => {
           </div>
         </section>
 
+        {/* Safety Images Gallery */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div 
+              ref={imagesRef}
+              className={`grid md:grid-cols-2 gap-8 transition-all duration-700 ${
+                imagesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] group">
+                <img 
+                  src={safetyPPE} 
+                  alt="Safety equipment and PPE" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">🦺 Personal Protective Equipment</h3>
+                    <p className="text-white/80 text-sm">Certified safety gear for every team member</p>
+                  </div>
+                </div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] group">
+                <img 
+                  src={safetyHeightWork} 
+                  alt="Height work safety" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">🧗 Height Work Safety</h3>
+                    <p className="text-white/80 text-sm">Trained professionals with proper fall protection</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Safety Commitment */}
         <section className="py-20 lg:py-28 bg-secondary">
           <div className="container mx-auto px-4">
@@ -90,7 +132,7 @@ const Safety = () => {
                   Our Commitment
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Zero Compromise on Safety
+                  Zero Compromise on Safety ⚠️
                 </h2>
                 <p className="text-muted-foreground mb-6">
                   At SHRI AMOGHA ENERGY CARE ENGINEERING, we believe that every worker deserves to return home safely. Our comprehensive safety program ensures that all operations are conducted with the highest safety standards.
@@ -103,7 +145,7 @@ const Safety = () => {
                     <Eye className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Vision Zero</h4>
+                    <h4 className="font-semibold">Vision Zero 🎯</h4>
                     <p className="text-sm text-muted-foreground">Zero accidents, zero injuries, zero compromises</p>
                   </div>
                 </div>
@@ -111,19 +153,19 @@ const Safety = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center">
                   <div className="text-4xl font-bold text-primary mb-2">100%</div>
-                  <div className="text-sm text-muted-foreground">Safety Compliance</div>
+                  <div className="text-sm text-muted-foreground">Safety Compliance ✅</div>
                 </div>
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center mt-8">
                   <div className="text-4xl font-bold text-accent mb-2">Zero</div>
-                  <div className="text-sm text-muted-foreground">Lost Time Injuries</div>
+                  <div className="text-sm text-muted-foreground">Lost Time Injuries 🛡️</div>
                 </div>
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center">
                   <div className="text-4xl font-bold text-accent mb-2">24/7</div>
-                  <div className="text-sm text-muted-foreground">Safety Monitoring</div>
+                  <div className="text-sm text-muted-foreground">Safety Monitoring 👁️</div>
                 </div>
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center mt-8">
                   <div className="text-4xl font-bold text-primary mb-2">All</div>
-                  <div className="text-sm text-muted-foreground">Teams Certified</div>
+                  <div className="text-sm text-muted-foreground">Teams Certified 🏅</div>
                 </div>
               </div>
             </div>
@@ -140,7 +182,7 @@ const Safety = () => {
               }`}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Our Safety Pillars
+                Our Safety Pillars 🏛️
               </h2>
               <p className="text-muted-foreground">
                 The foundation of our safety culture rests on these core pillars.
@@ -179,7 +221,7 @@ const Safety = () => {
                   Best Practices
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Our Safety Practices
+                  Our Safety Practices 📋
                 </h2>
                 <p className="text-muted-foreground">
                   Comprehensive safety measures we implement in all our operations.
@@ -206,7 +248,7 @@ const Safety = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground mb-6">
-                Partner with a Safety-First Company
+                Partner with a Safety-First Company 🤝
               </h2>
               <p className="text-lg text-accent-foreground/80 mb-8">
                 Choose a service partner that values safety as much as you do.

@@ -7,11 +7,21 @@ import { ArrowRight, CheckCircle2, ArrowLeft, Cog, Zap, Wind, Settings, Droplets
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import { LucideIcon } from "lucide-react";
 
+// Import images
+import mechanicalImg from "@/assets/product-mechanical.jpg";
+import electricalImg from "@/assets/product-electrical.jpg";
+import bladeRotorImg from "@/assets/product-blade-rotor.jpg";
+import yawPitchImg from "@/assets/product-yaw-pitch.jpg";
+import lubricantsImg from "@/assets/product-lubricants.jpg";
+import fastenersImg from "@/assets/product-fasteners.jpg";
+import auxiliaryImg from "@/assets/product-auxiliary.jpg";
+
 interface ProductPageData {
   title: string;
   subtitle: string;
   description: string;
   icon: LucideIcon;
+  image: string;
   products: string[];
   brands: string[];
 }
@@ -22,6 +32,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Quality Mechanical Parts",
     description: "Complete range of mechanical components for all major wind turbine brands. We supply OEM and high-quality non-OEM parts to meet your specific requirements.",
     icon: Cog,
+    image: mechanicalImg,
     products: [
       "Main shaft bearings",
       "Gearbox components",
@@ -39,6 +50,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Electrical Components",
     description: "Comprehensive range of electrical components and control system spares for wind turbines. All parts are tested and certified for reliability.",
     icon: Zap,
+    image: electricalImg,
     products: [
       "Generators and alternators",
       "Converters and inverters",
@@ -56,6 +68,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Blade System Components",
     description: "Quality blade and rotor components to maintain optimal aerodynamic performance. We supply repair kits and replacement parts for all turbine types.",
     icon: Wind,
+    image: bladeRotorImg,
     products: [
       "Blade root inserts",
       "Blade bolts and hardware",
@@ -73,6 +86,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Control System Parts",
     description: "Complete range of yaw and pitch system components for precise turbine control and optimal energy capture.",
     icon: Settings,
+    image: yawPitchImg,
     products: [
       "Yaw motors",
       "Pitch motors",
@@ -90,6 +104,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Fluid System Products",
     description: "High-quality lubricants and hydraulic products specifically formulated for wind turbine applications.",
     icon: Droplets,
+    image: lubricantsImg,
     products: [
       "Gearbox oils",
       "Hydraulic fluids",
@@ -107,6 +122,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Essential Hardware",
     description: "Complete range of fasteners and consumable items essential for wind turbine service and repair.",
     icon: Wrench,
+    image: fastenersImg,
     products: [
       "High-strength bolts",
       "Tower bolts",
@@ -124,6 +140,7 @@ const productData: Record<string, ProductPageData> = {
     subtitle: "Nacelle Components",
     description: "Auxiliary equipment and nacelle components for complete turbine service requirements.",
     icon: Package,
+    image: auxiliaryImg,
     products: [
       "Cooling fans",
       "Heaters",
@@ -142,6 +159,7 @@ const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { ref: headerRef, isInView: headerInView } = useScrollAnimation();
   const { ref: productsRef, isInView: productsInView } = useScrollAnimation();
+  const { ref: imageRef, isInView: imageInView } = useScrollAnimation();
   
   const data = slug ? productData[slug] : null;
   
@@ -192,8 +210,39 @@ const ProductDetail = () => {
           </div>
         </section>
 
+        {/* Product Image */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div 
+              ref={imageRef}
+              className={`max-w-4xl mx-auto transition-all duration-700 ${
+                imageInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <div className="relative rounded-2xl overflow-hidden aspect-video group">
+                <img 
+                  src={data.image} 
+                  alt={data.title} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-8">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-primary/20 backdrop-blur-sm flex items-center justify-center">
+                      <IconComponent className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">{data.title}</h3>
+                      <p className="text-white/80 text-sm">Quality Products 📦</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Products List */}
-        <section className="py-20 lg:py-28 bg-background">
+        <section className="py-20 lg:py-28 bg-secondary">
           <div className="container mx-auto px-4">
             <div 
               ref={headerRef}
@@ -202,7 +251,7 @@ const ProductDetail = () => {
               }`}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-                Available Products
+                Available Products ⚙️
               </h2>
               <div 
                 ref={productsRef}
@@ -211,7 +260,7 @@ const ProductDetail = () => {
                 }`}
               >
                 {data.products.map((product, index) => (
-                  <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+                  <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-background border border-border hover:border-primary/30 transition-colors">
                     <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
                     <span>{product}</span>
                   </div>
@@ -222,15 +271,15 @@ const ProductDetail = () => {
         </section>
 
         {/* Brands */}
-        <section className="py-20 lg:py-28 bg-secondary">
+        <section className="py-20 lg:py-28 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-8">
-                Compatible Brands
+                Compatible Brands 🏷️
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 {data.brands.map((brand, index) => (
-                  <div key={index} className="px-6 py-3 rounded-full bg-background border border-border font-medium">
+                  <div key={index} className="px-6 py-3 rounded-full bg-primary/10 border border-primary/20 font-medium text-primary">
                     {brand}
                   </div>
                 ))}
@@ -244,7 +293,7 @@ const ProductDetail = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground mb-6">
-                Need {data.title}?
+                Need {data.title}? 🤝
               </h2>
               <p className="text-lg text-accent-foreground/80 mb-8">
                 Contact us for pricing and availability of specific parts.
