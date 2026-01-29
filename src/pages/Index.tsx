@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/chat/ChatBot";
 import HeroSection from "@/components/home/HeroSection";
 import ServicesOverview from "@/components/home/ServicesOverview";
 import ZoomParallaxSection from "@/components/home/ZoomParallaxSection";
@@ -26,6 +27,7 @@ const Index = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <ChatBot />
     </div>
   );
 };

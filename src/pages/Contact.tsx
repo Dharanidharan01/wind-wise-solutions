@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/chat/ChatBot";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -246,6 +247,7 @@ const Contact = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <ChatBot />
     </div>
   );
 };

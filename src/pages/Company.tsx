@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/chat/ChatBot";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Target, Eye, Shield, Award, Heart } from "lucide-react";
 import leadershipDeepak from "@/assets/leadership-deepak.png";
@@ -183,6 +184,7 @@ const Company = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <ChatBot />
     </div>
   );
 };

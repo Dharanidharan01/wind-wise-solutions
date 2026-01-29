@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import ChatBot from "@/components/chat/ChatBot";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, GraduationCap, Award, HardHat, AlertTriangle, CheckCircle2, HeartPulse, Eye, FileCheck } from "lucide-react";
@@ -265,6 +266,7 @@ const Safety = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <ChatBot />
     </div>
   );
 };
