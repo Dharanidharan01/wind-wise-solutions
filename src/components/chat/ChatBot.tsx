@@ -1,44 +1,155 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Loader2, ChevronRight, User, Bot } from "lucide-react";
+import { X, Send, Loader2, ChevronRight, User, Trash2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
+  timestamp?: number;
 };
 
+type ChatState = {
+  messages: Message[];
+  isFirstVisit: boolean;
+  lastPage: string;
+  sessionId: string;
+};
+
+const STORAGE_KEY = "saece-chatbot-state";
+
 const QUICK_ACTIONS = [
-  { label: "Services", path: "/services", icon: "🔧" },
-  { label: "Products", path: "/products", icon: "📦" },
-  { label: "About Us", path: "/company", icon: "🏢" },
-  { label: "Careers", path: "/career", icon: "💼" },
-  { label: "Contact", path: "/contact", icon: "📞" },
-  { label: "Safety", path: "/safety", icon: "🛡️" },
+  { label: "Services", path: "/services", icon: "🔧", description: "Explore our service offerings" },
+  { label: "Products", path: "/products", icon: "📦", description: "Browse wind turbine parts" },
+  { label: "About Us", path: "/company", icon: "🏢", description: "Learn about SAECE" },
+  { label: "Careers", path: "/career", icon: "💼", description: "Join our team" },
+  { label: "Contact", path: "/contact", icon: "📞", description: "Get in touch" },
+  { label: "Safety", path: "/safety", icon: "🛡️", description: "Our safety standards" },
+];
+
+const PAGE_CONTEXT: Record<string, { name: string; followUp: string }> = {
+  "/": { name: "Home", followUp: "Welcome to our homepage! Would you like me to guide you through our services or help you find something specific?" },
+  "/services": { name: "Services", followUp: "You're now on the Services page. Would you like details on a specific service like Technical Support, Inspection, or our Call Basis service?" },
+  "/products": { name: "Products", followUp: "Here's our Products catalog! Looking for specific components like mechanical parts, electrical spares, or lubricants?" },
+  "/company": { name: "Company", followUp: "This is our Company page. Would you like to know more about our leadership team, mission, or company history?" },
+  "/career": { name: "Careers", followUp: "Interested in joining SAECE? I can help you explore current openings or guide you through the application process!" },
+  "/contact": { name: "Contact", followUp: "Ready to get in touch? You can fill out the form, call us directly, or chat on WhatsApp. How can I assist?" },
+  "/safety": { name: "Safety", followUp: "Safety is our priority! Want to learn about our safety protocols, training programs, or certifications?" },
+  "/in-house": { name: "In-House", followUp: "Explore our in-house capabilities! We specialize in blade bearings, gearboxes, generators, and more. What interests you?" },
+  "/testimonials": { name: "Testimonials", followUp: "See what our clients say about us! Would you like to know more about our track record?" },
+};
+
+const SUGGESTED_QUESTIONS = [
+  "What services do you offer?",
+  "How can I get a quote?",
+  "Do you have job openings?",
+  "What brands do you support?",
 ];
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/website-assistant`;
+
+// Custom Robot Icon Component
+const RobotIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="8" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity="0.1" />
+    <rect x="7" y="11" width="3" height="3" rx="1" fill="currentColor" />
+    <rect x="14" y="11" width="3" height="3" rx="1" fill="currentColor" />
+    <path d="M9 16H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M12 4V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="12" cy="3" r="1.5" fill="currentColor" />
+    <path d="M2 12H4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M20 12H22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M2 16H4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M20 16H22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+// Typing indicator with animated dots
+const TypingIndicator = () => (
+  <div className="flex gap-1 px-3 py-2">
+    {[0, 1, 2].map((i) => (
+      <motion.div
+        key={i}
+        className="w-2 h-2 rounded-full bg-blue-400"
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+      />
+    ))}
+  </div>
+);
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [hasGreeted, setHasGreeted] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const lastPathRef = useRef(location.pathname);
+  const hasInitializedRef = useRef(false);
+
+  // Generate session ID
+  const getSessionId = useCallback(() => {
+    let sessionId = sessionStorage.getItem("saece-session-id");
+    if (!sessionId) {
+      sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      sessionStorage.setItem("saece-session-id", sessionId);
+    }
+    return sessionId;
+  }, []);
+
+  // Load state from localStorage
+  useEffect(() => {
+    if (hasInitializedRef.current) return;
+    hasInitializedRef.current = true;
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const state: ChatState = JSON.parse(saved);
+        // Only restore if same session
+        const currentSessionId = getSessionId();
+        if (state.sessionId === currentSessionId && state.messages.length > 0) {
+          setMessages(state.messages);
+          setIsFirstVisit(state.isFirstVisit);
+          lastPathRef.current = state.lastPage;
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load chat state:", error);
+    }
+  }, [getSessionId]);
+
+  // Save state to localStorage whenever messages change
+  useEffect(() => {
+    if (messages.length > 0) {
+      const state: ChatState = {
+        messages,
+        isFirstVisit,
+        lastPage: location.pathname,
+        sessionId: getSessionId(),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+  }, [messages, isFirstVisit, location.pathname, getSessionId]);
 
   // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      const scrollElement = scrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   // Focus input when chat opens
   useEffect(() => {
@@ -47,28 +158,85 @@ const ChatBot = () => {
     }
   }, [isOpen]);
 
-  // Initial greeting
+  // Detect page navigation and add contextual follow-up
   useEffect(() => {
-    if (isOpen && !hasGreeted) {
-      setMessages([
-        {
+    if (lastPathRef.current !== location.pathname && messages.length > 0 && isOpen) {
+      const pageInfo = PAGE_CONTEXT[location.pathname] || 
+        Object.entries(PAGE_CONTEXT).find(([path]) => location.pathname.startsWith(path))?.[1];
+      
+      if (pageInfo) {
+        const followUpMessage: Message = {
           role: "assistant",
-          content: "Welcome to SAECE! 👋 I'm your virtual assistant. How can I help you today? You can ask me about our services, products, careers, or I can help you navigate the site.",
-        },
-      ]);
-      setHasGreeted(true);
+          content: pageInfo.followUp,
+          timestamp: Date.now(),
+        };
+        setMessages(prev => [...prev, followUpMessage]);
+      }
+      lastPathRef.current = location.pathname;
     }
-  }, [isOpen, hasGreeted]);
+  }, [location.pathname, messages.length, isOpen]);
 
-  const handleQuickAction = (path: string) => {
+  // Initial greeting for first-time visitors
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      const greeting = isFirstVisit
+        ? "Hey there! 👋 Welcome to SAECE! I'm your AI assistant. I noticed this is your first visit - would you like a quick tour of what we offer, or do you have something specific in mind?"
+        : "Welcome back! 👋 How can I help you today?";
+      
+      setMessages([{ role: "assistant", content: greeting, timestamp: Date.now() }]);
+      if (isFirstVisit) setIsFirstVisit(false);
+    }
+  }, [isOpen, messages.length, isFirstVisit]);
+
+  const handleQuickAction = (path: string, addMessage = true) => {
+    if (addMessage) {
+      const action = QUICK_ACTIONS.find(a => a.path === path);
+      if (action) {
+        setMessages(prev => [
+          ...prev,
+          { role: "user", content: `Take me to ${action.label}`, timestamp: Date.now() }
+        ]);
+      }
+    }
+    lastPathRef.current = path; // Update before navigating
     navigate(path);
-    setIsOpen(false);
+    
+    // Add contextual message after navigation
+    setTimeout(() => {
+      const pageInfo = PAGE_CONTEXT[path];
+      if (pageInfo) {
+        setMessages(prev => [
+          ...prev,
+          { role: "assistant", content: pageInfo.followUp, timestamp: Date.now() }
+        ]);
+      }
+    }, 300);
+  };
+
+  const handleSuggestedQuestion = (question: string) => {
+    setShowSuggestions(false);
+    streamChat(question);
+  };
+
+  const clearChat = () => {
+    setMessages([]);
+    setShowSuggestions(true);
+    localStorage.removeItem(STORAGE_KEY);
+    // Add fresh greeting
+    setTimeout(() => {
+      setMessages([{
+        role: "assistant",
+        content: "Chat cleared! 🔄 How can I help you today?",
+        timestamp: Date.now()
+      }]);
+    }, 100);
   };
 
   const streamChat = async (userMessage: string) => {
-    const newMessages: Message[] = [...messages, { role: "user", content: userMessage }];
+    const newMessages: Message[] = [...messages, { role: "user", content: userMessage, timestamp: Date.now() }];
     setMessages(newMessages);
     setIsLoading(true);
+    setShowSuggestions(false);
 
     let assistantContent = "";
 
@@ -79,7 +247,10 @@ const ChatBot = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ 
+          messages: newMessages.map(m => ({ role: m.role, content: m.content })),
+          currentPage: location.pathname
+        }),
       });
 
       if (!response.ok || !response.body) {
@@ -91,7 +262,7 @@ const ChatBot = () => {
       let textBuffer = "";
 
       // Add empty assistant message
-      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: "", timestamp: Date.now() }]);
 
       while (true) {
         const { done, value } = await reader.read();
@@ -118,7 +289,7 @@ const ChatBot = () => {
               assistantContent += content;
               setMessages((prev) => {
                 const updated = [...prev];
-                updated[updated.length - 1] = { role: "assistant", content: assistantContent };
+                updated[updated.length - 1] = { role: "assistant", content: assistantContent, timestamp: Date.now() };
                 return updated;
               });
             }
@@ -135,6 +306,7 @@ const ChatBot = () => {
         {
           role: "assistant",
           content: "I apologize, but I'm having trouble responding right now. Please try again or contact us directly at +91 9080508426.",
+          timestamp: Date.now(),
         },
       ]);
     } finally {
@@ -152,20 +324,22 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Chat Toggle Button */}
+      {/* Chat Toggle Button - Positioned left of WhatsApp */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)" }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-elevated flex items-center justify-center"
+            className="fixed bottom-6 right-[88px] z-50 w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 flex items-center justify-center border-2 border-blue-400/30"
             aria-label="Open chat assistant"
           >
-            <MessageCircle className="h-6 w-6" />
+            <RobotIcon className="h-7 w-7" />
+            {/* Pulse animation ring */}
+            <span className="absolute inset-0 rounded-full bg-blue-400/20 animate-ping" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -177,28 +351,42 @@ const ChatBot = () => {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] h-[520px] max-h-[calc(100vh-100px)] bg-card border border-border rounded-2xl shadow-elevated flex flex-col overflow-hidden"
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-48px)] h-[560px] max-h-[calc(100vh-100px)] bg-card border border-blue-200/30 rounded-2xl shadow-2xl shadow-blue-500/10 flex flex-col overflow-hidden"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-primary text-primary-foreground">
+            {/* Header - Blue themed */}
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                  <Bot className="h-5 w-5" />
+                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center ring-2 ring-white/30">
+                  <RobotIcon className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">SAECE Assistant</h3>
-                  <p className="text-xs opacity-80">Online • Here to help</p>
+                  <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                    SAECE Assistant
+                    <Sparkles className="h-3.5 w-3.5 text-yellow-300" />
+                  </h3>
+                  <p className="text-xs text-blue-100">AI-Powered • Always here to help</p>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="h-8 w-8 text-primary-foreground hover:bg-primary-foreground/20"
-              >
-                <X className="h-5 w-5" />
-              </Button>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={clearChat}
+                  className="h-8 w-8 text-white/80 hover:text-white hover:bg-white/20"
+                  title="Clear chat"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(false)}
+                  className="h-8 w-8 text-white hover:bg-white/20"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
 
             {/* Messages */}
@@ -209,68 +397,96 @@ const ChatBot = () => {
                     key={index}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
                     className={cn(
                       "flex gap-2",
                       message.role === "user" ? "justify-end" : "justify-start"
                     )}
                   >
                     {message.role === "assistant" && (
-                      <div className="w-7 h-7 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center">
-                        <Bot className="h-4 w-4 text-primary" />
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex-shrink-0 flex items-center justify-center ring-1 ring-blue-200">
+                        <RobotIcon className="h-4 w-4 text-blue-600" />
                       </div>
                     )}
                     <div
                       className={cn(
-                        "max-w-[80%] px-3 py-2 rounded-2xl text-sm",
+                        "max-w-[80%] px-3.5 py-2.5 text-sm leading-relaxed",
                         message.role === "user"
-                          ? "bg-primary text-primary-foreground rounded-br-md"
-                          : "bg-muted text-foreground rounded-bl-md"
+                          ? "bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-2xl rounded-br-md shadow-sm"
+                          : "bg-gradient-to-br from-slate-50 to-slate-100 text-foreground rounded-2xl rounded-bl-md border border-slate-200/50"
                       )}
                     >
                       {message.content}
                     </div>
                     {message.role === "user" && (
-                      <div className="w-7 h-7 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center">
-                        <User className="h-4 w-4 text-muted-foreground" />
+                      <div className="w-7 h-7 rounded-full bg-slate-200 flex-shrink-0 flex items-center justify-center">
+                        <User className="h-4 w-4 text-slate-600" />
                       </div>
                     )}
                   </motion.div>
                 ))}
+                
+                {/* Typing indicator */}
                 {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="flex gap-2 items-center"
                   >
-                    <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-primary" />
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center ring-1 ring-blue-200">
+                      <RobotIcon className="h-4 w-4 text-blue-600" />
                     </div>
-                    <div className="bg-muted px-4 py-2 rounded-2xl rounded-bl-md">
-                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl rounded-bl-md border border-slate-200/50">
+                      <TypingIndicator />
                     </div>
                   </motion.div>
                 )}
               </div>
 
-              {/* Quick Actions */}
-              {messages.length <= 1 && (
+              {/* Suggested Questions - Show for new conversations */}
+              {showSuggestions && messages.length <= 1 && !isLoading && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ delay: 0.4 }}
+                  className="mt-4 space-y-3"
+                >
+                  <p className="text-xs text-muted-foreground font-medium">💡 Try asking:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {SUGGESTED_QUESTIONS.map((question, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleSuggestedQuestion(question)}
+                        className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs rounded-full border border-blue-200/50 transition-colors"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Quick Navigation */}
+              {messages.length <= 1 && !isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
                   className="mt-4"
                 >
-                  <p className="text-xs text-muted-foreground mb-2">Quick Navigation</p>
+                  <p className="text-xs text-muted-foreground font-medium mb-2">🧭 Quick Navigation</p>
                   <div className="grid grid-cols-2 gap-2">
                     {QUICK_ACTIONS.map((action) => (
                       <button
                         key={action.path}
                         onClick={() => handleQuickAction(action.path)}
-                        className="flex items-center gap-2 px-3 py-2 bg-secondary/50 hover:bg-secondary rounded-lg text-xs font-medium text-foreground transition-colors group"
+                        className="flex items-center gap-2 px-3 py-2.5 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 rounded-xl text-xs font-medium text-foreground transition-all border border-slate-200/50 group"
                       >
-                        <span>{action.icon}</span>
-                        <span>{action.label}</span>
-                        <ChevronRight className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="text-base">{action.icon}</span>
+                        <div className="flex-1 text-left">
+                          <span className="block group-hover:text-blue-700">{action.label}</span>
+                        </div>
+                        <ChevronRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all" />
                       </button>
                     ))}
                   </div>
@@ -279,21 +495,21 @@ const ChatBot = () => {
             </ScrollArea>
 
             {/* Input */}
-            <form onSubmit={handleSubmit} className="p-3 border-t border-border bg-background">
+            <form onSubmit={handleSubmit} className="p-3 border-t border-slate-200/50 bg-slate-50/50">
               <div className="flex gap-2">
                 <Input
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-1 bg-muted border-0 focus-visible:ring-1"
+                  className="flex-1 bg-white border-slate-200 focus-visible:ring-blue-500 focus-visible:ring-1 focus-visible:border-blue-300"
                   disabled={isLoading}
                 />
                 <Button
                   type="submit"
                   size="icon"
                   disabled={!input.trim() || isLoading}
-                  className="h-10 w-10 rounded-full"
+                  className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 shadow-md shadow-blue-500/20"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -302,16 +518,18 @@ const ChatBot = () => {
                   )}
                 </Button>
               </div>
-              <p className="text-[10px] text-muted-foreground text-center mt-2">
-                Need human support?{" "}
+              <div className="flex items-center justify-between mt-2 px-1">
+                <p className="text-[10px] text-muted-foreground">
+                  Powered by AI
+                </p>
                 <button
                   type="button"
-                  onClick={() => handleQuickAction("/contact")}
-                  className="text-primary hover:underline"
+                  onClick={() => handleQuickAction("/contact", false)}
+                  className="text-[10px] text-blue-600 hover:underline flex items-center gap-1"
                 >
-                  Contact Us
+                  Need human support? →
                 </button>
-              </p>
+              </div>
             </form>
           </motion.div>
         )}
