@@ -7,11 +7,23 @@ import { ArrowRight, CheckCircle2, ArrowLeft, Wind, Settings, Cog, Zap, RotateCw
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import { LucideIcon } from "lucide-react";
 
+// Import images
+import bladeBearingImg from "@/assets/inhouse-blade-bearing.jpg";
+import gearboxImg from "@/assets/inhouse-gearbox.jpg";
+import yawGearImg from "@/assets/inhouse-yaw-gear.jpg";
+import generatorImg from "@/assets/inhouse-generator.jpg";
+import mainBearingImg from "@/assets/inhouse-main-bearing.jpg";
+import pitchYawImg from "@/assets/inhouse-pitch-yaw.jpg";
+import lubricantsImg from "@/assets/inhouse-lubricants.jpg";
+import assemblyImg from "@/assets/inhouse-assembly.jpg";
+import testingImg from "@/assets/inhouse-testing.jpg";
+
 interface ServicePageData {
   title: string;
   subtitle: string;
   description: string;
   icon: LucideIcon;
+  image: string;
   features: string[];
   process: { step: number; title: string; description: string }[];
   benefits: string[];
@@ -23,6 +35,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Expert Blade Bearing Services",
     description: "Our blade bearing service covers all major wind turbine brands. We provide comprehensive inspection, repair, and replacement services to ensure optimal blade performance and longevity.",
     icon: Circle,
+    image: bladeBearingImg,
     features: [
       "Complete blade bearing inspection and diagnostics",
       "Precision greasing and lubrication services",
@@ -52,6 +65,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Complete Gearbox Solutions",
     description: "Comprehensive gearbox overhaul, repair, and reconditioning services for all wind turbine models. Our in-house facility handles everything from minor repairs to complete rebuilds.",
     icon: Settings,
+    image: gearboxImg,
     features: [
       "Complete gearbox inspection and diagnostics",
       "Oil analysis and contamination testing",
@@ -81,6 +95,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Precision Yaw System Service",
     description: "Expert yaw gear repair and service ensuring optimal turbine positioning and maximum energy capture. Our specialists handle all yaw system components with precision.",
     icon: RotateCw,
+    image: yawGearImg,
     features: [
       "Yaw gear inspection and diagnostics",
       "Yaw motor service and replacement",
@@ -110,6 +125,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Expert Generator Solutions",
     description: "Complete generator rewinding, repair, and refurbishment services. Our team handles all types of wind turbine generators with expertise and precision.",
     icon: Zap,
+    image: generatorImg,
     features: [
       "Generator inspection and testing",
       "Stator and rotor rewinding",
@@ -139,6 +155,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Critical Bearing Solutions",
     description: "Main shaft bearing inspection, repair, and replacement services. We ensure the heart of your turbine operates smoothly and reliably.",
     icon: Cog,
+    image: mainBearingImg,
     features: [
       "Main bearing condition monitoring",
       "Vibration analysis and diagnostics",
@@ -168,6 +185,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Complete System Solutions",
     description: "Comprehensive pitch and yaw system service and component repair. Our experts ensure optimal blade pitch control and turbine orientation.",
     icon: Wind,
+    image: pitchYawImg,
     features: [
       "Pitch system inspection and service",
       "Yaw system diagnostics",
@@ -197,6 +215,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Fluid System Solutions",
     description: "Complete hydraulic system service and lubricant management solutions. We ensure all fluid systems operate at peak efficiency.",
     icon: Droplets,
+    image: lubricantsImg,
     features: [
       "Oil analysis and condition monitoring",
       "Lubricant replacement and top-up",
@@ -226,6 +245,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Complete Rebuild Solutions",
     description: "Expert component assembly and refurbishment services. We restore components to like-new condition with precision engineering.",
     icon: Wrench,
+    image: assemblyImg,
     features: [
       "Complete component disassembly",
       "Thorough cleaning and inspection",
@@ -255,6 +275,7 @@ const serviceData: Record<string, ServicePageData> = {
     subtitle: "Quality Reconditioning Services",
     description: "Professional reconditioning and rigorous testing of spare parts. We ensure every component meets strict quality standards.",
     icon: TestTube,
+    image: testingImg,
     features: [
       "Comprehensive component testing",
       "Cleaning and reconditioning",
@@ -286,6 +307,7 @@ const InHouseDetail = () => {
   const { ref: headerRef, isInView: headerInView } = useScrollAnimation();
   const { ref: featuresRef, isInView: featuresInView } = useScrollAnimation();
   const { ref: processRef, isInView: processInView } = useScrollAnimation();
+  const { ref: imageRef, isInView: imageInView } = useScrollAnimation();
   
   const data = slug ? serviceData[slug] : null;
   
@@ -336,8 +358,39 @@ const InHouseDetail = () => {
           </div>
         </section>
 
+        {/* Service Image */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div 
+              ref={imageRef}
+              className={`max-w-4xl mx-auto transition-all duration-700 ${
+                imageInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <div className="relative rounded-2xl overflow-hidden aspect-video group">
+                <img 
+                  src={data.image} 
+                  alt={data.title} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-8">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-primary/20 backdrop-blur-sm flex items-center justify-center">
+                      <IconComponent className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">{data.title}</h3>
+                      <p className="text-white/80 text-sm">In-House Excellence 🔧</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Features */}
-        <section className="py-20 lg:py-28 bg-background">
+        <section className="py-20 lg:py-28 bg-secondary">
           <div className="container mx-auto px-4">
             <div 
               ref={headerRef}
@@ -346,7 +399,7 @@ const InHouseDetail = () => {
               }`}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-                Service Features
+                Service Features ⚙️
               </h2>
               <div 
                 ref={featuresRef}
@@ -355,7 +408,7 @@ const InHouseDetail = () => {
                 }`}
               >
                 {data.features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border">
+                  <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-background border border-border">
                     <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
                     <span>{feature}</span>
                   </div>
@@ -366,7 +419,7 @@ const InHouseDetail = () => {
         </section>
 
         {/* Process */}
-        <section className="py-20 lg:py-28 bg-secondary">
+        <section className="py-20 lg:py-28 bg-background">
           <div className="container mx-auto px-4">
             <div 
               ref={processRef}
@@ -375,11 +428,11 @@ const InHouseDetail = () => {
               }`}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-                Our Process
+                Our Process 📋
               </h2>
               <div className="grid md:grid-cols-4 gap-6">
                 {data.process.map((step, index) => (
-                  <div key={index} className="text-center p-6 rounded-2xl bg-background border border-border">
+                  <div key={index} className="text-center p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-colors">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                       <span className="text-xl font-bold text-primary">{step.step}</span>
                     </div>
@@ -393,11 +446,11 @@ const InHouseDetail = () => {
         </section>
 
         {/* Benefits */}
-        <section className="py-20 lg:py-28 bg-background">
+        <section className="py-20 lg:py-28 bg-secondary">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-                Key Benefits
+                Key Benefits ✨
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 {data.benefits.map((benefit, index) => (
@@ -416,7 +469,7 @@ const InHouseDetail = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground mb-6">
-                Need {data.title}?
+                Need {data.title}? 🤝
               </h2>
               <p className="text-lg text-accent-foreground/80 mb-8">
                 Contact us for a quick assessment and competitive quote.
