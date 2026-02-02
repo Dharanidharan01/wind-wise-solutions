@@ -1,44 +1,35 @@
 import { ZoomParallax } from "@/components/ui/zoom-parallax";
 
-// Import actual in-house workshop images
-import inhouseGearbox from "@/assets/inhouse-gearbox.jpg";
-import inhouseMainBearing from "@/assets/inhouse-main-bearing.jpg";
-import inhouseGenerator from "@/assets/inhouse-generator.jpg";
-import inhouseYawGear from "@/assets/inhouse-yaw-gear.jpg";
-import inhouseBladeBearing from "@/assets/inhouse-blade-bearing.jpg";
-import inhouseAssembly from "@/assets/inhouse-assembly.jpg";
-import inhouseTesting from "@/assets/inhouse-testing.jpg";
-
 const ZoomParallaxSection = () => {
-  // In-house facility images - windmill components and workshop
+  // Workshop and In-house related images with wind turbines in center
   const windEnergyImages = [
     {
-      src: inhouseGearbox,
-      alt: "Gearbox repair and maintenance",
+      src: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Industrial workshop with machinery",
     },
     {
-      src: inhouseMainBearing,
-      alt: "Main bearing for wind turbines",
+      src: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Wind turbine field",
     },
     {
-      src: inhouseGenerator,
-      alt: "Generator overhaul and servicing",
+      src: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Engineering workshop tools",
     },
     {
-      src: inhouseYawGear,
-      alt: "Yaw gear drive system",
+      src: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Wind turbine close-up",
     },
     {
-      src: inhouseBladeBearing,
-      alt: "Blade bearing components",
+      src: "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Industrial gears and machinery",
     },
     {
-      src: inhouseAssembly,
-      alt: "Assembly and integration workshop",
+      src: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Renewable energy wind farm",
     },
     {
-      src: inhouseTesting,
-      alt: "Quality testing facility",
+      src: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Industrial service workshop",
     },
   ];
 
