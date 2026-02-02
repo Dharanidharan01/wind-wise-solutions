@@ -1,20 +1,27 @@
 import useScrollAnimation from "@/hooks/useScrollAnimation";
-import { Wind, Zap, Settings, Cog, RotateCw, Circle, Factory } from "lucide-react";
-import { LucideIcon } from "lucide-react";
+
+// Import brand logos
+import brandVestas from "@/assets/brand-vestas.png";
+import brandRRB from "@/assets/brand-rrb.jpeg";
+import brandPioneerWincon from "@/assets/brand-pioneer-wincon.png";
+import brandNEPC from "@/assets/brand-nepc.jpeg";
+import brandSiemensGamesa from "@/assets/brand-siemens-gamesa.png";
+import brandNEGMicon from "@/assets/brand-neg-micon.png";
+import brandLeitwind from "@/assets/brand-leitwind.png";
 
 interface Brand {
   name: string;
-  icon: LucideIcon;
+  logo: string;
 }
 
 const brands: Brand[] = [
-  { name: "Vestas", icon: Wind },
-  { name: "Vestas RRB", icon: RotateCw },
-  { name: "Pioneer Wincon", icon: Cog },
-  { name: "NEPC", icon: Zap },
-  { name: "Siemens Gamesa", icon: Settings },
-  { name: "NEG Micon", icon: Circle },
-  { name: "Leit Wind", icon: Factory },
+  { name: "Vestas", logo: brandVestas },
+  { name: "Vestas RRB", logo: brandRRB },
+  { name: "Pioneer Wincon", logo: brandPioneerWincon },
+  { name: "NEPC", logo: brandNEPC },
+  { name: "Siemens Gamesa", logo: brandSiemensGamesa },
+  { name: "NEG Micon", logo: brandNEGMicon },
+  { name: "Leit Wind", logo: brandLeitwind },
 ];
 
 const BrandsSection = () => {
@@ -58,21 +65,22 @@ const BrandsSection = () => {
           }`}
         >
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 max-w-4xl mx-auto">
-            {brands.map((brand, index) => {
-              const IconComponent = brand.icon;
-              return (
-                <div
-                  key={index}
-                  className="group relative p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover-lift transition-all duration-300 text-center"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                    <IconComponent className="h-6 w-6 text-primary" />
-                  </div>
-                  <span className="font-semibold text-sm group-hover:text-primary transition-colors">{brand.name}</span>
+            {brands.map((brand, index) => (
+              <div
+                key={index}
+                className="group relative p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover-lift transition-all duration-300 text-center flex flex-col items-center justify-center min-h-[120px]"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <div className="w-full h-16 flex items-center justify-center mb-3 group-hover:scale-110 transition-all duration-300">
+                  <img 
+                    src={brand.logo} 
+                    alt={`${brand.name} logo`}
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
-              );
-            })}
+                <span className="font-semibold text-sm group-hover:text-primary transition-colors">{brand.name}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
