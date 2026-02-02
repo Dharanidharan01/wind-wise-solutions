@@ -28,14 +28,14 @@ interface ServiceModalProps {
   onClose: () => void;
 }
 
-// Service-specific images and content
+// Service-specific images and content - each service has unique image combinations
 const serviceContent: Record<string, {
   images: string[];
   tagline: string;
   highlights: string[];
 }> = {
   "Multi Brand Services": {
-    images: [serviceSpareparts, inhouseGearbox, inhouseAssembly, serviceMaintenance],
+    images: [serviceSpareparts, inhouseGearbox, inhouseGenerator, inhouseAssembly],
     tagline: "Your One-Stop Solution for All Turbine Brands",
     highlights: [
       "Certified OEM & aftermarket parts",
@@ -45,7 +45,7 @@ const serviceContent: Record<string, {
     ],
   },
   "Technical Support": {
-    images: [serviceMaintenance, inhouseTesting, serviceInspection, inhouseGenerator],
+    images: [inhouseTesting, serviceMaintenance, inhouseGearbox, serviceInspection],
     tagline: "Expert Engineering at Your Fingertips",
     highlights: [
       "24/7 remote monitoring & support",
@@ -55,7 +55,7 @@ const serviceContent: Record<string, {
     ],
   },
   "Inspection & Troubleshooting": {
-    images: [serviceInspection, inhouseTesting, serviceMaintenance, serviceAmc],
+    images: [serviceInspection, inhouseTesting, serviceAmc, inhouseGenerator],
     tagline: "Precision Diagnostics for Peak Performance",
     highlights: [
       "Comprehensive turbine health checks",
@@ -65,7 +65,7 @@ const serviceContent: Record<string, {
     ],
   },
   "Operation & Service": {
-    images: [serviceMaintenance, serviceEmergency, serviceSpareparts, inhouseAssembly],
+    images: [serviceMaintenance, serviceEmergency, inhouseAssembly, serviceSpareparts],
     tagline: "Complete Operational Excellence",
     highlights: [
       "Rapid emergency response team",
@@ -75,7 +75,7 @@ const serviceContent: Record<string, {
     ],
   },
   "Erection & Derection": {
-    images: [inhouseAssembly, serviceMaintenance, inhouseGearbox, serviceSpareparts],
+    images: [inhouseAssembly, serviceEmergency, inhouseGearbox, serviceMaintenance],
     tagline: "Safe & Efficient Installation Services",
     highlights: [
       "Full turbine erection capability",
@@ -85,7 +85,7 @@ const serviceContent: Record<string, {
     ],
   },
   "Call Basis Service": {
-    images: [serviceEmergency, serviceMaintenance, serviceAmc, serviceInspection],
+    images: [serviceEmergency, serviceAmc, serviceInspection, inhouseTesting],
     tagline: "Flexible Support When You Need It",
     highlights: [
       "No long-term contract obligations",
