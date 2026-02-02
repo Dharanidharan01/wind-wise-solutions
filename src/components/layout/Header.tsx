@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import headerLogo from "@/assets/header-logo.jpeg";
 
 const navLinks = [
   {
@@ -72,8 +73,8 @@ const Header = () => {
           <Link to="/" className="flex items-center gap-3">
             <img 
               alt="SHRI AMOGHA ENERGY CARE ENGINEERING" 
-              className="h-20 md:h-24 w-auto" 
-              src="/lovable-uploads/1708bd4d-225c-43b3-9952-11545aa8f7e8.jpg" 
+              className="h-16 md:h-20 w-auto" 
+              src={headerLogo} 
             />
           </Link>
 
