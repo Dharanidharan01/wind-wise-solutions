@@ -20,7 +20,7 @@ const ZoomParallaxSection = () => {
       alt: "Wind turbine close-up",
     },
     {
-      src: "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
+      src: "https://images.unsplash.com/photo-1622103146053-f37729bc9f62??w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
       alt: "Industrial gears and machinery",
     },
     {
