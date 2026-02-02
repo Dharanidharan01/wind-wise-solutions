@@ -7,7 +7,7 @@ import ChatBot from "@/components/chat/ChatBot";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Target, Eye, Shield, Award, Heart } from "lucide-react";
 import leadershipDeepak from "@/assets/leadership-deepak.png";
-import leadershipDemo from "@/assets/leadership-demo.png";
+import leadershipPandi from "@/assets/leadership-pandi.png";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const Company = () => {
@@ -119,7 +119,7 @@ const Company = () => {
                 <div className="p-6 rounded-2xl bg-background border border-border hover-lift text-center group">
                   <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-primary/20 group-hover:border-primary/50 transition-colors">
                     <img 
-                      src={leadershipDemo} 
+                      src={leadershipPandi} 
                       alt="Pandi P - Managing Director" 
                       className="w-full h-full object-cover object-top"
                     />
