@@ -72,7 +72,7 @@ const Header = () => {
           <Link to="/" className="flex items-center gap-3">
             <img 
               alt="SHRI AMOGHA ENERGY CARE ENGINEERING" 
-              className="h-16 w-auto" 
+              className="h-20 md:h-24 w-auto" 
               src="/lovable-uploads/1708bd4d-225c-43b3-9952-11545aa8f7e8.jpg" 
             />
           </Link>
