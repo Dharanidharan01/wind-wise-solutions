@@ -12,8 +12,8 @@ const ZoomParallaxSection = () => {
       alt: "Wind turbine field",
     },
     {
-      src: "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
-      alt: "Wind turbine engineering",
+      src: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80",
+      alt: "Engineering workshop tools",
     },
     {
       src: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80",
