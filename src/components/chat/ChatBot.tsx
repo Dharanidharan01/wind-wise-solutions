@@ -40,7 +40,7 @@ const PAGE_CONTEXT: Record<string, { name: string; followUp: string }> = {
   "/contact": { name: "Contact", followUp: "Ready to get in touch? You can fill out the form, call us directly, or chat on WhatsApp. How can I assist?" },
   "/safety": { name: "Safety", followUp: "Safety is our priority! Want to learn about our safety protocols, training programs, or certifications?" },
   "/in-house": { name: "In-House", followUp: "Explore our in-house capabilities! We specialize in blade bearings, gearboxes, generators, and more. What interests you?" },
-  "/testimonials": { name: "Testimonials", followUp: "See what our clients say about us! Would you like to know more about our track record?" },
+  
 };
 
 const SUGGESTED_QUESTIONS = [
