@@ -121,7 +121,7 @@ const Company = () => {
                     <img 
                       src={leadershipPandi} 
                       alt="Pandi P - Managing Director" 
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-[center_30%] scale-110"
                     />
                   </div>
                   <h3 className="text-xl font-semibold mb-1">Pandi P</h3>
